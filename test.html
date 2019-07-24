@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>React 实例</title>
+<script src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js"></script>
+<script src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js"></script>
+<script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js"></script>
+</head>
+<body>
+
+
+<script type="text/babel">
+class Hello extends React.Component {
+ 
+  constructor(props) {
+      super(props);
+      this.state = {opacity: 1.0};
+  }
+ 
+  componentDidMount() {
+   console.log('componentDidMount');
+    this.timer = setInterval(function () {
+      var opacity = this.state.opacity;
+      opacity -= .05;
+      if (opacity < 0.1) {
+        opacity = 1.0;
+      }
+      this.setState({
+        opacity: opacity
+      });
+    }.bind(this), 100);
+  }
+  
+ componentWillUnmount () {
+	console.log('componentWillUnmount');
+ }
+
+  render () {
+    return (
+      <div style={{opacity: this.state.opacity}}>
+        Hello {this.props.name}
+      </div>
+    );
+  }
+}
+
+class HelloWrapper extends React.Component {
+ 
+  constructor(props) {
+      super(props);
+      this.state = {
+       isRender: false,
+       say: 'hi'
+    };
+  }
+ 
+ onHi = () => {
+   let { isRender} = this.state;
+   isRender = !isRender;
+   
+   let say = 'hi';
+   if(isRender) {
+      say = 'bye';
+   }
+   console.log({isRender: isRender, say: say });
+   this.setState({isRender: isRender, say: say });
+ }
+  render () {
+    return (
+      <div>
+        <h1>lifeCycle line</h1>
+        <button onClick={this.onHi}>{this.state.say}</button>
+		{this.state.isRender ? <Hello name={this.props.name}/>: null}
+      </div>
+    );
+  }
+}
+ 
+ReactDOM.render(
+  <HelloWrapper name="world"/>,
+  document.body
+);
+</script>
+
+</body>
+</html>
